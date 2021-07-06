@@ -1,0 +1,1 @@
+{"version":3,"file":"Board.js","sourceRoot":"","sources":["../../src/entities/Board.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,qCAAiE;AACjE,oEAAyD;AAGzD,IAAa,KAAK,GAAlB,MAAa,KAAK;CASjB,CAAA;AAPC;IADC,gCAAsB,CAAC,MAAM,CAAC;;iCACZ;AAGnB;IADC,gBAAM,EAAE;;oCACY;AAGrB;IADC,gBAAM,CAAC,aAAa,CAAC;;sCACI;AARf,KAAK;IADjB,gBAAM,EAAE;GACI,KAAK,CASjB;AATY,sBAAK"}
