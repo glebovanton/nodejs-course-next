@@ -34,9 +34,13 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Res() res, @Param('id') id: string) {
     const user = await this.usersService.findOne(id);
-    return User.toResponse(user);
+    return user
+      ? res.status(HttpStatus.OK).json(User.toResponse(user))
+      : res.status(HttpStatus.NOT_FOUND).json({
+          message: 'User not found',
+        });
   }
 
   @Put(':id')

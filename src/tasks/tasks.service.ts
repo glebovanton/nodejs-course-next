@@ -34,6 +34,6 @@ export class TasksService {
   async remove(taskId: string) {
     const taskRepository = getRepository(Task);
     const deletedRes = await taskRepository.delete(taskId);
-    return !!deletedRes;
+    return !!deletedRes.affected;
   }
 }

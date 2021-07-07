@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
-import { ITask } from "src/interface/task.interface";
-import { User } from "./User";
-import { Board } from "./Board";
+import { ITask } from 'src/interface/task.interface';
+import { User } from './User';
+import { Board } from './Board';
 
 @Entity()
 export class Task {

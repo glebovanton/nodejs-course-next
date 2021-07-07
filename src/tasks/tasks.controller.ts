@@ -6,6 +6,8 @@ import {
   Put,
   Param,
   Delete,
+  HttpStatus,
+  Res,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -16,27 +18,45 @@ export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.create(createTaskDto);
+  async create(
+    @Param('boardId') boardId: string,
+    @Body() createTaskDto: CreateTaskDto,
+  ) {
+    return await this.tasksService.create({
+      ...createTaskDto,
+      boardId: boardId,
+    });
   }
 
   @Get()
-  findAll() {
-    return this.tasksService.findAll();
+  async findAll() {
+    return await this.tasksService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tasksService.findOne(id);
+  async findOne(@Res() res, @Param('id') id: string) {
+    const task = await this.tasksService.findOne(id);
+    return task
+      ? res.status(HttpStatus.OK).json(task)
+      : res.status(HttpStatus.NOT_FOUND).json({
+          message: 'Task not found',
+        });
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(id, updateTaskDto);
+  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+    return await this.tasksService.update(id, updateTaskDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tasksService.remove(id);
+  async remove(@Res() res, @Param('id') id: string) {
+    const isRemoved = await this.tasksService.remove(id);
+    return isRemoved
+      ? res.status(HttpStatus.NO_CONTENT).json({
+          message: 'The task has been deleted',
+        })
+      : res.status(HttpStatus.NOT_FOUND).json({
+          message: 'Task not found',
+        });
   }
 }
