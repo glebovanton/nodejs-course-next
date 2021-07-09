@@ -1,9 +1,10 @@
+import * as path from 'path';
 import * as YAML from 'yamljs';
 import { SwaggerModule } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { config } from './common/config';
-import * as path from 'path';
+import { initAdmin } from './helpers/db';
 
 const { PORT } = config;
 
@@ -16,4 +17,6 @@ async function bootstrap() {
     process.stdout.write(`App is running on http://localhost:${PORT} \n`),
   );
 }
-bootstrap();
+bootstrap().then(async () => {
+  await initAdmin();
+});

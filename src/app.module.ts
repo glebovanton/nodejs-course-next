@@ -1,37 +1,32 @@
 import { Module } from '@nestjs/common';
-import { RouterModule, Routes } from 'nest-router';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { BoardsModule } from './boards/boards.module';
 import { TasksModule } from './tasks/tasks.module';
+import { LoginModule } from './login/login.module';
 import ORMConfig from './ormconfig';
-
-const routes: Routes = [
-  {
-    path: '/boards/:boardId/tasks',
-    module: TasksModule,
-    children: [
-      {
-        path: '/:boardId/tasks',
-        module: TasksModule,
-      },
-    ],
-  },
-];
+import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       ...ORMConfig,
     }),
-    // RouterModule.forRoutes(routes),
     UsersModule,
     BoardsModule,
     TasksModule,
+    LoginModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}
